@@ -15,6 +15,8 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.androidstudy.Key.KeyCol;
+import com.example.androidstudy.Led.LedCol;
 import com.example.androidstudy.Serial.SerialCol;
 import com.hikvision.audio.AudioCodecParam;
 import com.hikvision.audio.AudioEngine;
@@ -51,7 +53,6 @@ public class MainActivity extends Activity implements Callback {
     private Button moveInButton = null;
     private Button moveOutButton = null;
     private Button voiceButton = null;
-    private TextView Key=null;
 
     private Button previewButton = null;
     private Button loginButton = null;
@@ -103,7 +104,11 @@ public class MainActivity extends Activity implements Callback {
 
 
     private SerialCol serialCol;
-
+    private Thread serialth;
+    private LedCol ledCol;
+    private Thread ledth;
+    private KeyCol keyCol;
+    private Thread keyth;
 
     /** Called when the activity is first created. */
     @Override
@@ -116,7 +121,17 @@ public class MainActivity extends Activity implements Callback {
         }
 
         serialCol=new SerialCol("/dev/ttySAC0",115200);
-        serialCol.sendData("HELLO WORLD");
+        serialth =new Thread(serialCol);
+        serialth.start();
+        ledCol =new LedCol();
+//      ledth=new Thread(ledCol);
+//      ledth.start();
+        keyCol=new KeyCol();
+        keyth=new Thread(keyCol);
+        keyth.start();
+
+
+
         loginButton = (Button) findViewById(R.id.btn_Login);
         previewButton = (Button) findViewById(R.id.btn_Preview);
         leftButton = (Button)findViewById(R.id.btn_PTZ_left);

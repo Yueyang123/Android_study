@@ -1,11 +1,14 @@
 package com.example.androidstudy.Serial;
 
+import android.os.Message;
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class SerialCol {
+public class SerialCol implements Runnable{
 
     private SerialPort mSerialPort;
     private OutputStream mOutputStream;
@@ -54,5 +57,28 @@ public class SerialCol {
     public  int getBaudrate()
     {
         return baudrate;
+    }
+
+    public void run()
+    {
+
+        int size;
+        while (true) {
+            try {
+                byte[] buffer = new byte[64];
+                if (mInputStream == null) return;
+
+                size = mInputStream.read(buffer);
+                byte[] receviceData = new byte[size];
+                System.arraycopy(buffer, 0, receviceData, 0, size);
+                if (size > 0) {
+                    Log.d(SerialPath, "recevice message,length" + size);
+                    Log.d(SerialPath, new String(receviceData));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
     }
 }

@@ -58,7 +58,7 @@ public class GpioCol {
 
 
     public void gpioSetDirection(int portIndex,GpioDirection gpioDirection ){
-        HardCol.GpioSetDirection(portIndex,gpioDirection == GpioDirection.GPIO_DIRECTION_INPUT);
+        HardCol.GpioSetDirection(portIndex,gpioDirection==GpioDirection.GPIO_DIRECTION_OUTPUT);
     }
 
     public void gpioSetValue(int portIndex,int value){
